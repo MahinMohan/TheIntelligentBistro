@@ -13,6 +13,7 @@ import Animated, {
   withSpring,
   withSequence,
 } from 'react-native-reanimated';
+import { useRouter } from 'expo-router';
 import { Colors } from '../constants/colors';
 import { MenuItem } from '../types';
 
@@ -52,6 +53,7 @@ function SpiceDots({ level }: { level: number }) {
 }
 
 export function MenuCard({ item, quantity, onAdd, onUpdateQty }: Props) {
+  const router = useRouter();
   const btnScale = useSharedValue(1);
   const badgeScale = useSharedValue(1);
 
@@ -78,10 +80,13 @@ export function MenuCard({ item, quantity, onAdd, onUpdateQty }: Props) {
   const visibleTags = item.tags.slice(0, 2);
 
   return (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      activeOpacity={0.85}
+      onPress={() => router.push(`/dish/${item.id}`)}
+    >
       <View style={styles.imageWrapper}>
         <Image source={{ uri: item.image }} style={styles.image} />
-        <View style={styles.overlay} />
         {quantity > 0 && (
           <Animated.View style={[styles.qtyBadge, badgeStyle]}>
             <Text style={styles.qtyBadgeText}>{quantity}</Text>
@@ -114,7 +119,11 @@ export function MenuCard({ item, quantity, onAdd, onUpdateQty }: Props) {
 
           {quantity === 0 ? (
             <Animated.View style={btnStyle}>
-              <TouchableOpacity style={styles.addBtn} onPress={handleAdd} activeOpacity={0.8}>
+              <TouchableOpacity
+                style={styles.addBtn}
+                onPress={(e) => { e.stopPropagation(); handleAdd(); }}
+                activeOpacity={0.8}
+              >
                 <Text style={styles.addBtnText}>+</Text>
               </TouchableOpacity>
             </Animated.View>
@@ -122,7 +131,7 @@ export function MenuCard({ item, quantity, onAdd, onUpdateQty }: Props) {
             <View style={styles.stepper}>
               <TouchableOpacity
                 style={styles.stepBtn}
-                onPress={() => onUpdateQty(quantity - 1)}
+                onPress={(e) => { e.stopPropagation(); onUpdateQty(quantity - 1); }}
                 activeOpacity={0.7}
               >
                 <Text style={styles.stepBtnText}>−</Text>
@@ -130,7 +139,7 @@ export function MenuCard({ item, quantity, onAdd, onUpdateQty }: Props) {
               <Animated.Text style={[styles.stepQty, badgeStyle]}>{quantity}</Animated.Text>
               <TouchableOpacity
                 style={styles.stepBtn}
-                onPress={() => onUpdateQty(quantity + 1)}
+                onPress={(e) => { e.stopPropagation(); onUpdateQty(quantity + 1); }}
                 activeOpacity={0.7}
               >
                 <Text style={styles.stepBtnText}>+</Text>
@@ -139,7 +148,7 @@ export function MenuCard({ item, quantity, onAdd, onUpdateQty }: Props) {
           )}
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -155,14 +164,6 @@ const styles = StyleSheet.create({
   },
   imageWrapper: { position: 'relative', width: '100%', height: 140 },
   image: { width: '100%', height: '100%', resizeMode: 'cover' },
-  overlay: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: '55%',
-    backgroundColor: 'rgba(20,20,22,0.55)',
-  },
   qtyBadge: {
     position: 'absolute',
     top: 8,
@@ -179,11 +180,7 @@ const styles = StyleSheet.create({
   name: { color: Colors.textPrimary, fontSize: 13, fontWeight: '700', letterSpacing: 0.2 },
   desc: { color: Colors.textMuted, fontSize: 11, lineHeight: 15 },
   tagsRow: { flexDirection: 'row', gap: 4, flexWrap: 'wrap', marginTop: 2 },
-  tag: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
+  tag: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
   tagText: { fontSize: 9, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
   footer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 6 },
   price: { color: Colors.gold, fontSize: 15, fontWeight: '700' },
