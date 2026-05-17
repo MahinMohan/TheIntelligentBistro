@@ -54,14 +54,15 @@ export default function ChatScreen() {
   return (
     <KeyboardAvoidingView
       style={styles.screen}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
-      android_contentInsetAdjustmentBehavior="never"
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
     >
       {/* Header */}
       <SafeAreaView style={styles.header}>
-        <Text style={styles.headerTitle}>AI Sommelier</Text>
-        <Text style={styles.headerSub}>Powered by GPT-4o</Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.headerButler}>🤵</Text>
+          <Text style={styles.headerTitle}>Sage</Text>
+        </View>
       </SafeAreaView>
 
       {/* Messages */}
@@ -77,10 +78,10 @@ export default function ChatScreen() {
         onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: true })}
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Text style={styles.emptyEmoji}>🍽️</Text>
-            <Text style={styles.emptyTitle}>Good evening</Text>
+            <Text style={styles.emptyEmoji}>🤵</Text>
+            <Text style={styles.emptyTitle}>Hello!</Text>
             <Text style={styles.emptyDesc}>
-              Tell me what you're in the mood for, or try one of these:
+              What can I get for you today?
             </Text>
           </View>
         }
@@ -131,6 +132,12 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.border,
     backgroundColor: Colors.bg,
   },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  headerButler: { fontSize: 24 },
   headerTitle: {
     color: Colors.gold,
     fontSize: 22,
@@ -166,8 +173,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     paddingHorizontal: 12,
-    paddingVertical: 10,
-    paddingBottom: 12,
+    paddingTop: 10,
+    paddingBottom: Platform.OS === 'android' ? 10 : 12,
     gap: 10,
     backgroundColor: Colors.card,
     borderTopWidth: 1,

@@ -73,9 +73,9 @@ function WelcomeOverlay({ onDismiss }: { onDismiss: () => void }) {
           <Text style={styles.welcomeTitle}>Welcome to{'\n'}The Intelligent Bistro</Text>
 
           <Text style={styles.welcomeBody}>
-            I am your <Text style={styles.bold}>AI Sommelier</Text>.{'\n\n'}
+            I am <Text style={styles.bold}>Sage</Text>, your AI dining assistant.{'\n\n'}
             Please feel free to browse our menu. When you're ready to order or need a recommendation, simply tap the{' '}
-            <Text style={styles.bold}>sommelier button</Text> — I'm always here.
+            <Text style={styles.bold}>Sage button</Text> — I'm always here.
           </Text>
 
           <View style={styles.decorRow}>
@@ -110,7 +110,9 @@ function SommelierButton() {
       >
         <Text style={styles.sommelierEmoji}>🤵</Text>
       </TouchableOpacity>
-      <Text style={styles.sommelierLabel}>Sommelier</Text>
+      <View style={styles.sommelierLabelWrap}>
+        <Text style={styles.sommelierLabel}>SAGE</Text>
+      </View>
     </MotiView>
   );
 }
@@ -315,22 +317,29 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   sommelierBtn: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: Colors.elevated,
-    borderWidth: 1.5,
-    borderColor: Colors.gold,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: Colors.gold,
+    borderWidth: 2,
+    borderColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: Colors.gold,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.35,
-    shadowRadius: 8,
-    elevation: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.6,
+    shadowRadius: 10,
+    elevation: 12,
   },
-  sommelierEmoji: { fontSize: 22 },
-  sommelierLabel: { color: Colors.gold, fontSize: 9, fontWeight: '700', letterSpacing: 0.5, textTransform: 'uppercase' },
+  sommelierEmoji: { fontSize: 24 },
+  sommelierLabelWrap: {
+    backgroundColor: Colors.gold,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    marginTop: 2,
+  },
+  sommelierLabel: { color: '#000', fontSize: 10, fontWeight: '900', letterSpacing: 1.2 },
 
   // ── Header ──
   header: {
