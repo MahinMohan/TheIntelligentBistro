@@ -2,13 +2,15 @@ import { create } from 'zustand';
 import * as Haptics from 'expo-haptics';
 import { CartItem, AIActionType } from '../types';
 
+type PlaceOrderCallback = (items: CartItem[]) => void;
+
 interface CartStore {
   items: CartItem[];
   addItem: (itemId: string, quantity?: number, modifier?: string) => void;
   removeItem: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
-  applyAIActions: (actions: AIActionType[]) => void;
+  applyAIActions: (actions: AIActionType[], onPlaceOrder?: PlaceOrderCallback) => void;
   getTotalItems: () => number;
   getItemQuantity: (itemId: string) => number;
 }
@@ -61,7 +63,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
   },
 
   // Atomically apply all actions from AI response
-  applyAIActions: (actions) => {
+  applyAIActions: (actions, onPlaceOrder) => {
     actions.forEach((action) => {
       switch (action.type) {
         case 'ADD_ITEM':
@@ -74,6 +76,11 @@ export const useCartStore = create<CartStore>((set, get) => ({
           get().updateQuantity(action.itemId, action.quantity);
           break;
         case 'CLEAR_CART':
+          get().clearCart();
+          break;
+        case 'PLACE_ORDER':
+          // Save snapshot before clearing, then clear
+          if (onPlaceOrder) onPlaceOrder(get().items);
           get().clearCart();
           break;
         case 'NONE':

@@ -51,7 +51,7 @@ function CustomSplash({ onFinish }: { onFinish: () => void }) {
         style={styles.bg}
         resizeMode="cover"
       >
-        {/* Dark overlay for readability */}
+        {/* Subtle overlay — keep image bright */}
         <View style={styles.overlay} />
 
       </ImageBackground>
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
 
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.55)',
+    backgroundColor: 'rgba(0,0,0,0)',
   },
 
   logoWrap: {

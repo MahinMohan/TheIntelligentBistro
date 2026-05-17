@@ -56,6 +56,7 @@ export default function ChatScreen() {
       style={styles.screen}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+      android_contentInsetAdjustmentBehavior="never"
     >
       {/* Header */}
       <SafeAreaView style={styles.header}>
@@ -121,7 +122,7 @@ export default function ChatScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: Colors.bg },
+  screen: { flex: 1, backgroundColor: Colors.bg, },
   header: {
     paddingTop: 54,
     paddingBottom: 12,
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     paddingHorizontal: 12,
     paddingVertical: 10,
-    paddingBottom: Platform.OS === 'ios' ? 28 : 12,
+    paddingBottom: 12,
     gap: 10,
     backgroundColor: Colors.card,
     borderTopWidth: 1,

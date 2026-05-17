@@ -15,6 +15,7 @@ import { Colors } from '../../src/constants/colors';
 import { useMenu } from '../../src/hooks/useMenu';
 import { useCart } from '../../src/hooks/useCart';
 import { useCartStore } from '../../src/store/cartStore';
+import { useOrderStore } from '../../src/store/orderStore';
 import { CartItem } from '../../src/types';
 
 interface CartRowProps {
@@ -72,17 +73,34 @@ export default function CartScreen() {
   const { menu } = useMenu();
   const cart = useCart(menu);
   const cartItems = useCartStore((s) => s.items);
+  const orderStore = useOrderStore();
+  const previousOrders = useOrderStore((s) => s.orders);
   const router = useRouter();
   const [ordered, setOrdered] = useState(false);
 
   const handlePlaceOrder = useCallback(() => {
+    // Save order snapshot before clearing
+    const orderItems = cartItems.map((ci) => {
+      const menuItem = menu.find((m) => m.id === ci.itemId);
+      return {
+        itemId: ci.itemId,
+        name: menuItem?.name ?? ci.itemId,
+        quantity: ci.quantity,
+        price: menuItem?.price ?? 0,
+      };
+    });
+    orderStore.placeOrder({
+      items: orderItems,
+      subtotal: cart.getSubtotal(),
+      total: cart.getTotal(),
+    });
     setOrdered(true);
     setTimeout(() => {
       cart.clearCart();
       setOrdered(false);
       Alert.alert('Order Placed! 🎉', 'Your order has been sent to the kitchen. Sit back and relax!');
     }, 2000);
-  }, [cart]);
+  }, [cart, cartItems, menu, orderStore]);
 
   const subtotal = cart.getSubtotal();
   const tax = cart.getTax();
@@ -94,6 +112,15 @@ export default function CartScreen() {
       <View style={styles.screen}>
         <SafeAreaView style={styles.header}>
           <Text style={styles.headerTitle}>Your Order</Text>
+          <TouchableOpacity
+            style={[styles.prevOrdersBtn, previousOrders.length === 0 && styles.prevOrdersBtnDisabled]}
+            onPress={() => previousOrders.length > 0 && router.push('/orders')}
+            activeOpacity={previousOrders.length > 0 ? 0.7 : 1}
+          >
+            <Text style={[styles.prevOrdersBtnText, previousOrders.length === 0 && styles.prevOrdersBtnTextDisabled]}>
+              Previous Orders {previousOrders.length > 0 ? `(${previousOrders.length})` : ''}
+            </Text>
+          </TouchableOpacity>
         </SafeAreaView>
         <View style={styles.emptyState}>
           <Text style={styles.emptyEmoji}>🍽️</Text>
@@ -125,8 +152,19 @@ export default function CartScreen() {
   return (
     <View style={styles.screen}>
       <SafeAreaView style={styles.header}>
-        <Text style={styles.headerTitle}>Your Order</Text>
-        <Text style={styles.headerSub}>{itemCount} {itemCount === 1 ? 'item' : 'items'}</Text>
+        <View>
+          <Text style={styles.headerTitle}>Your Order</Text>
+          <Text style={styles.headerSub}>{itemCount} {itemCount === 1 ? 'item' : 'items'}</Text>
+        </View>
+        <TouchableOpacity
+          style={[styles.prevOrdersBtn, previousOrders.length === 0 && styles.prevOrdersBtnDisabled]}
+          onPress={() => previousOrders.length > 0 && router.push('/orders')}
+          activeOpacity={previousOrders.length > 0 ? 0.7 : 1}
+        >
+          <Text style={[styles.prevOrdersBtnText, previousOrders.length === 0 && styles.prevOrdersBtnTextDisabled]}>
+            Previous Orders {previousOrders.length > 0 ? `(${previousOrders.length})` : ''}
+          </Text>
+        </TouchableOpacity>
       </SafeAreaView>
 
       <FlatList
@@ -203,6 +241,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
     backgroundColor: Colors.bg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerTitle: {
     color: Colors.textPrimary,
@@ -210,6 +251,28 @@ const styles = StyleSheet.create({
     fontFamily: 'PlayfairDisplay-Italic',
   },
   headerSub: { color: Colors.textMuted, fontSize: 13, fontFamily: 'DMSans-Regular', marginTop: 2 },
+  prevOrdersBtn: {
+    backgroundColor: Colors.gold + '22',
+    borderWidth: 1,
+    borderColor: Colors.gold,
+    borderRadius: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+  },
+  prevOrdersBtnDisabled: {
+    backgroundColor: Colors.elevated,
+    borderColor: Colors.border,
+    opacity: 0.35,
+  },
+  prevOrdersBtnText: {
+    color: Colors.gold,
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0.3,
+  },
+  prevOrdersBtnTextDisabled: {
+    color: Colors.textMuted,
+  },
   list: { padding: 16, paddingBottom: 40 },
   cartRow: {
     flexDirection: 'row',

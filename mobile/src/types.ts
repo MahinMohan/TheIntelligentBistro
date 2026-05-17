@@ -20,6 +20,7 @@ export type AIActionType =
   | { type: 'REMOVE_ITEM'; itemId: string }
   | { type: 'UPDATE_QUANTITY'; itemId: string; quantity: number }
   | { type: 'CLEAR_CART' }
+  | { type: 'PLACE_ORDER' }
   | { type: 'NONE' };
 
 export interface ChatMessage {

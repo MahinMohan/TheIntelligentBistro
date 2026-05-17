@@ -13,12 +13,13 @@ export async function fetchMenu(): Promise<MenuItem[]> {
 export async function sendChatMessage(
   message: string,
   cartState: CartItem[],
-  menuContext: MenuItem[]
+  menuContext: MenuItem[],
+  orderHistory?: string
 ): Promise<ChatAPIResponse> {
   const res = await fetch(`${BASE_URL}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message, cartState, menuContext }),
+    body: JSON.stringify({ message, cartState, menuContext, orderHistory }),
   });
   if (!res.ok) throw new Error(`Chat API failed: ${res.status}`);
   return res.json() as Promise<ChatAPIResponse>;

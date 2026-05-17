@@ -43,11 +43,13 @@ CRITICAL RULES:
 5. If the message is unrelated to food, ordering, or the restaurant, reply helpfully but return [{ "type": "NONE" }].
 6. Keep replies warm, brief (1-2 sentences), and elegant — like a professional sommelier would speak.
 7. Use exact item IDs from the menu above for all actions.
-8. "actions" must always be an array, even for a single action or NONE.`;
+8. "actions" must always be an array, even for a single action or NONE.
+9. If the guest says "place order", "confirm order", "go ahead", "that's all", "submit order" or similar — return [{ "type": "PLACE_ORDER" }]. This will save the order and clear the cart automatically.
+10. You have access to the guest's order history this session (provided in each message). Use it to answer questions like "what did I order?", "how long ago?", "what's been placed?" etc.`;
 }
 
 export async function chatHandler(req: Request, res: Response): Promise<void> {
-  const { message, cartState, menuContext } = req.body as ChatRequest;
+  const { message, cartState, menuContext, orderHistory } = req.body as ChatRequest;
 
   if (!message || typeof message !== 'string') {
     res.status(400).json({ error: 'message is required' });
@@ -75,7 +77,7 @@ export async function chatHandler(req: Request, res: Response): Promise<void> {
         { role: 'system', content: buildSystemPrompt(menu) },
         {
           role: 'user',
-          content: `Current cart: [${cartSummary}]\n\nGuest message: "${message}"`,
+          content: `Current cart: [${cartSummary}]\nOrder history this session:\n${orderHistory ?? 'None'}\n\nGuest message: "${message}"`,
         },
       ],
       temperature: 0.4,

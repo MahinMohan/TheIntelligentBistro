@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Dimensions,
   SafeAreaView,
+  Animated,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { MotiView } from 'moti';
@@ -41,10 +42,53 @@ function SpiceDots({ level }: { level: number }) {
   );
 }
 
+function CartToast({ visible }: { visible: boolean }) {
+  const opacity = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    Animated.timing(opacity, {
+      toValue: visible ? 1 : 0,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  }, [visible]);
+  return (
+    <Animated.View style={[toastStyles.toast, { opacity }]}>
+      <Text style={toastStyles.text}>🛒  Added to cart</Text>
+    </Animated.View>
+  );
+}
+
+const toastStyles = StyleSheet.create({
+  toast: {
+    position: 'absolute',
+    top: 60,
+    alignSelf: 'center',
+    backgroundColor: Colors.elevated,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: Colors.gold,
+    zIndex: 999,
+    shadowColor: Colors.gold,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  text: { color: Colors.gold, fontWeight: '700', fontSize: 14 },
+});
+
 export default function DishDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const cart = useCart(menuItems);
+  const [toastVisible, setToastVisible] = useState(false);
+
+  const showToast = () => {
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 1800);
+  };
 
   const item = menuItems.find((m) => m.id === id);
 
@@ -67,6 +111,7 @@ export default function DishDetailScreen() {
 
   return (
     <View style={styles.screen}>
+      <CartToast visible={toastVisible} />
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
         {/* Hero Image */}
         <View style={styles.imageContainer}>
@@ -126,7 +171,7 @@ export default function DishDetailScreen() {
         {quantity === 0 ? (
           <TouchableOpacity
             style={styles.addToCartBtn}
-            onPress={() => { cart.addItem(item.id); }}
+            onPress={() => { cart.addItem(item.id); showToast(); }}
             activeOpacity={0.85}
           >
             <Text style={styles.addToCartText}>Add to Cart  +</Text>

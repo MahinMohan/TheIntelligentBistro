@@ -20,12 +20,14 @@ export type ActionType =
   | { type: 'REMOVE_ITEM'; itemId: string }
   | { type: 'UPDATE_QUANTITY'; itemId: string; quantity: number }
   | { type: 'CLEAR_CART' }
+  | { type: 'PLACE_ORDER' }
   | { type: 'NONE' };
 
 export interface ChatRequest {
   message: string;
   cartState: CartItem[];
   menuContext: MenuItem[];
+  orderHistory?: string;
 }
 
 export interface ChatResponse {

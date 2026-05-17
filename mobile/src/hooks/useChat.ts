@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useChatStore } from '../store/chatStore';
 import { useCartStore } from '../store/cartStore';
+import { useOrderStore } from '../store/orderStore';
 import { sendChatMessage } from '../api/client';
 import { MenuItem } from '../types';
 
@@ -10,6 +11,7 @@ const nextId = () => `msg-${Date.now()}-${++msgIdCounter}`;
 export function useChat(menu: MenuItem[]) {
   const { addMessage, setTyping } = useChatStore();
   const cartStore = useCartStore();
+  const orderStore = useOrderStore();
 
   const sendMessage = useCallback(
     async (text: string) => {
@@ -23,12 +25,39 @@ export function useChat(menu: MenuItem[]) {
       setTyping(true);
 
       try {
-        const response = await sendChatMessage(text, cartStore.items, menu);
+        // Include order history so AI knows what's been placed
+        const orderHistory = orderStore.getOrdersSummary();
 
-        // Apply cart mutations atomically before adding the AI reply
+        const response = await sendChatMessage(
+          text,
+          cartStore.items,
+          menu,
+          orderHistory
+        );
+
         const hasRealActions = response.actions.some((a) => a.type !== 'NONE');
+
         if (hasRealActions) {
-          cartStore.applyAIActions(response.actions);
+          cartStore.applyAIActions(response.actions, (itemsSnapshot) => {
+            // Build and save the placed order
+            const orderItems = itemsSnapshot.map((ci) => {
+              const menuItem = menu.find((m) => m.id === ci.itemId);
+              return {
+                itemId: ci.itemId,
+                name: menuItem?.name ?? ci.itemId,
+                quantity: ci.quantity,
+                price: menuItem?.price ?? 0,
+              };
+            });
+            const subtotal = orderItems.reduce(
+              (s, i) => s + i.price * i.quantity, 0
+            );
+            orderStore.placeOrder({
+              items: orderItems,
+              subtotal,
+              total: subtotal * 1.08,
+            });
+          });
         }
 
         addMessage({
@@ -50,7 +79,7 @@ export function useChat(menu: MenuItem[]) {
         setTyping(false);
       }
     },
-    [addMessage, setTyping, cartStore, menu]
+    [addMessage, setTyping, cartStore, orderStore, menu]
   );
 
   return { sendMessage };
