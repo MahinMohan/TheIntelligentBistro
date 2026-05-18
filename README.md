@@ -10,11 +10,11 @@ Built as part of the Viridien AI Full-Stack Engineering Internship assessment.
 
 **Splash Screen**
 
-<img src="assets/screenshots/splash.png" width="250"/>
+<img src="assets/screenshots/splash.jpg" width="250"/>
 
 **Menu Screen**
 
-<img src="assets/screenshots/menu1.png" width="250"/> <img src="assets/screenshots/menu2.png" width="250"/>
+<img src="assets/screenshots/menu1.jpg" width="250"/> <img src="assets/screenshots/menu2.jpg" width="250"/>
 
 - Scroll-aware animated header with restaurant branding
 - Horizontally scrollable category tabs with animated gold active indicator
@@ -26,7 +26,7 @@ Built as part of the Viridien AI Full-Stack Engineering Internship assessment.
 
 **AI Chat Screen (Sage)**
 
-<img src="assets/screenshots/chat1.png" width="250"/> <img src="assets/screenshots/chat2.png" width="250"/>
+<img src="assets/screenshots/chat1.jpg" width="250"/> <img src="assets/screenshots/chat2.jpg" width="250"/>
 
 - Natural language ordering: "Add two wagyu burgers and a lemonade"
 - AI always receives current cart state and full menu context
@@ -38,7 +38,7 @@ Built as part of the Viridien AI Full-Stack Engineering Internship assessment.
 
 **Order History Screen**
 
-<img src="assets/screenshots/orders1.png" width="250"/> <img src="assets/screenshots/orders2.png" width="250"/>
+<img src="assets/screenshots/orders1.jpg" width="250"/> <img src="assets/screenshots/orders2.jpg" width="250"/>
 
 - Previous orders button appears in the cart after first order is placed
 - Each order shows a unique ID, time elapsed, full item breakdown, and total
