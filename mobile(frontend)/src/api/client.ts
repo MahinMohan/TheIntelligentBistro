@@ -2,7 +2,7 @@ import { CartItem, MenuItem, ChatAPIResponse } from '../types';
 
 // Change this to your machine's local IP when testing on a physical device
 // e.g. 'http://192.168.1.100:3001'
-const BASE_URL = 'http://192.168.1.98:3001'; // update if IP changes
+const BASE_URL = 'http://your-local-ip:3001'; // replace with your machine's local IP
 
 export async function fetchMenu(): Promise<MenuItem[]> {
   const res = await fetch(`${BASE_URL}/api/menu`);

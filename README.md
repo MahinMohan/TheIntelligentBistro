@@ -6,6 +6,46 @@ Built as part of the Viridien AI Full-Stack Engineering Internship assessment.
 
 ---
 
+## Features
+
+**Splash Screen**
+
+<img src="assets/screenshots/splash.png" width="250"/>
+
+**Menu Screen**
+
+<img src="assets/screenshots/menu1.png" width="250"/> <img src="assets/screenshots/menu2.png" width="250"/>
+
+- Scroll-aware animated header with restaurant branding
+- Horizontally scrollable category tabs with animated gold active indicator
+- 2-column card grid with skeleton loaders on initial load
+- Tap any card to view full dish details
+- Add to cart directly from the card with animated quantity stepper
+- Floating cart button with live item count and subtotal
+- Sage AI shortcut button for quick access to the assistant
+
+**AI Chat Screen (Sage)**
+
+<img src="assets/screenshots/chat1.png" width="250"/> <img src="assets/screenshots/chat2.png" width="250"/>
+
+- Natural language ordering: "Add two wagyu burgers and a lemonade"
+- AI always receives current cart state and full menu context
+- Structured JSON actions applied atomically to the cart in real time
+- ActionCard in chat thread shows exactly what changed with an Undo option
+- Animated typing indicator while AI is responding
+- Suggestion chips on empty state to guide first-time users
+- Order history tracked and available for AI to reference
+
+**Order History Screen**
+
+<img src="assets/screenshots/orders1.png" width="250"/> <img src="assets/screenshots/orders2.png" width="250"/>
+
+- Previous orders button appears in the cart after first order is placed
+- Each order shows a unique ID, time elapsed, full item breakdown, and total
+- Session grand total displayed when multiple orders are placed
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
@@ -24,35 +64,6 @@ AI tools used during development: Cursor (Claude Sonnet)
 
 ---
 
-## Features
-
-**Menu Screen**
-- Scroll-aware animated header with restaurant branding
-- Horizontally scrollable category tabs with animated gold active indicator
-- 2-column card grid with skeleton loaders on initial load
-- Tap any card to view full dish details
-- Add to cart directly from the card with animated quantity stepper
-- Floating cart button with live item count and subtotal
-- Sage AI shortcut button for quick access to the assistant
-
-**AI Chat Screen (Sage)**
-- Natural language ordering: "Add two wagyu burgers and a lemonade"
-- AI always receives current cart state and full menu context
-- Structured JSON actions applied atomically to the cart in real time
-- ActionCard in chat thread shows exactly what changed with an Undo option
-- Animated typing indicator while AI is responding
-- Suggestion chips on empty state to guide first-time users
-- Order history tracked and available for AI to reference
-
-**Cart Screen**
-- Full cart with animated quantity steppers and swipe-to-delete
-- Order summary with subtotal, 8% estimated tax, and total
-- Place order from UI or by asking Sage
-- Previous orders button appears after first order is placed
-- Order history screen showing order ID, time elapsed, items, and totals
-
----
-
 ## Project Structure
 
 ```
@@ -63,7 +74,7 @@ Viridien/
 │       ├── chatHandler.ts    Groq AI integration and system prompt
 │       ├── menuData.ts       Menu data source of truth
 │       └── types.ts          TypeScript interfaces
-└── mobile/
+└── mobile(frontend)/
     ├── app/
     │   ├── _layout.tsx       Root layout, fonts, splash screen
     │   ├── (tabs)/
@@ -159,17 +170,17 @@ curl http://localhost:3001/api/health
 ### 2. Mobile App
 
 ```bash
-cd mobile
+cd "mobile(frontend)"
 npm install
 npx expo start
 ```
 
 Scan the QR code with Expo Go on your phone.
 
-**Important:** If testing on a physical device, update `BASE_URL` in `mobile/src/api/client.ts` to your machine's local IP address:
+**Important:** If testing on a physical device, update `BASE_URL` in `mobile(frontend)/src/api/client.ts` to your machine's local IP address:
 
 ```ts
-const BASE_URL = 'http://192.168.x.x:3001';
+const BASE_URL = 'http://your-local-ip:3001';
 ```
 
 Find your IP by running `ipconfig` (Windows) or `ifconfig` (Mac/Linux). Both your phone and computer must be on the same WiFi network.
@@ -190,6 +201,6 @@ ngrok http 3001
 |---|---|---|
 | `GROQ_API_KEY` | `backend/.env` | Groq API key for AI chat |
 | `PORT` | `backend/.env` | Server port (default: 3001) |
-| `BASE_URL` | `mobile/src/api/client.ts` | Backend URL for the mobile app |
+| `BASE_URL` | `mobile(frontend)/src/api/client.ts` | Backend URL for the mobile app |
 
 A `.env.example` file is included in the backend folder for reference.
