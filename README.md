@@ -1,8 +1,6 @@
 # The Intelligent Bistro
 
-A high-fidelity mobile restaurant ordering app powered by a conversational AI assistant named Sage. Users browse a premium menu, manage their cart, and place orders through natural language — "Add two spicy chicken sandwiches and a large water."
-
-Built as part of the Viridien AI Full-Stack Engineering Internship assessment.
+A premium React Native dining app where a conversational AI assistant named Sage handles the entire ordering experience. Chat with Sage and it intelligently interprets your intent, updates your cart in real time, and tracks your full order history across the session. Every interaction is powered by a Node.js backend that processes natural language and returns precise structured JSON actions, keeping the UI and AI in perfect sync at all times.
 
 ---
 
