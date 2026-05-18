@@ -155,7 +155,7 @@ export const menuData: MenuItem[] = [
     description:
       'Sicilian lemon curd in a buttery pâte sablée shell, topped with Italian meringue, candied lemon zest, and raspberry coulis.',
     price: 12,
-    image: 'https://images.unsplash.com/photo-1519915028121-7d3463d5b1ff?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=800&q=80',
     category: 'Desserts',
     tags: ['vegetarian'],
     spiceLevel: 0,
@@ -208,11 +208,11 @@ export const menuData: MenuItem[] = [
   },
   {
     id: 'drink-004',
-    name: 'Still or Sparkling Water',
+    name: 'Large Water',
     description:
-      'Premium still or sparkling mineral water — Volvic, Evian, or San Pellegrino. Please specify your preference.',
+      'Chilled 750ml premium mineral water bottle — still or sparkling. Pure, crisp, and refreshing.',
     price: 4,
-    image: 'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1523362628745-0c100150b504?w=800&q=80',
     category: 'Drinks',
     tags: ['vegetarian', 'gluten-free'],
     spiceLevel: 0,
@@ -223,7 +223,7 @@ export const menuData: MenuItem[] = [
     description:
       'Aperol, Prosecco Superiore, elderflower tonic, edible wildflowers, and orange bitters — the perfect aperitivo.',
     price: 14,
-    image: 'https://images.unsplash.com/photo-1534353473418-4cfa0de64888?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1560508180-03f285f67ded?w=800&q=80',
     category: 'Drinks',
     tags: ['popular'],
     spiceLevel: 0,
